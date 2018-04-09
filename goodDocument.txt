@@ -1,1 +1,3 @@
-"laravel �����ֲ�" => https://laravel.com/api/5.2/Illuminate/Database/Query/Builder.html#method_toSql
+"laravel 核心手册" => https://laravel.com/api/5.2/Illuminate/Database/Query/Builder.html#method_toSql
+
+"python + phantomjs 实现真实用户访问url" => https://www.cnblogs.com/chenice/p/6994111.html
