@@ -14,7 +14,7 @@
 
   ```
   //对SVN的版本库目录进行创建  （可以是任何目录）
-  mkdir /var/svn/svnserve
+  mkdir /var/svn/
 
   //对创建的目录 进行svnadmin 命令来创建SVN的版本库
   svnadmin create /var/svn/svnserve    
