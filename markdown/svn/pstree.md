@@ -19,7 +19,9 @@
   #（/var/svn/svnserve）  创建的版本库中会存在很多的项目文件
   #其中 （/var/svn/svnserve/conf/）中的文件是我们正常需要修改的配置文件
   ```
+
   * svnserve 服务配置文件
+
   ```
   #我们只需要对 general 配置项进行对应的修改就可以了
   [general]
@@ -29,13 +31,17 @@
   authz-db = authz                       #指定权限配置文件名
   realm = /var/svn/svnserve/something    #指定版本库的认证域，即在登录时提示的认证域名称
   ```
+
   * passwd 用户配置文件
+
   ```
   #配置一个 用户名:yangkai,密码:yangkai ;的SVN用户
   [users]
   yangkai = yangkai@judian
   ```
+
   * authz 权限配置文件
+  
   ```
   #用户组定义
   [groups]
