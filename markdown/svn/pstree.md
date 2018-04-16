@@ -1,6 +1,7 @@
 ## 创建SVN的进程树
 
 * 进程守护
+
   ```
   #我们需要先查看下 svnserve 是否已经启动
   ps -ef | grep svn
@@ -11,7 +12,9 @@
   #就可以正常的创建SVN的进程
   svnserve -d -r /var/svn/svnserve
   ```
+
 * 配置修改
+
   ```
   #（/var/svn/svnserve）  创建的版本库中会存在很多的项目文件
   #其中 （/var/svn/svnserve/conf/）中的文件是我们正常需要修改的配置文件
@@ -47,7 +50,3 @@
   guest=rw
   @project=rw
   ```
-
-
-
-  
