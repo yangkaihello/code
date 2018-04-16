@@ -37,11 +37,11 @@
   ```
   #配置一个 用户名:yangkai,密码:yangkai ;的SVN用户
   [users]
-  yangkai = yangkai@judian
+  yangkai = yangkai
   ```
 
   * authz 权限配置文件
-  
+
   ```
   #用户组定义
   [groups]
