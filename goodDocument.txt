@@ -1,3 +1,7 @@
 "laravel 核心手册" => https://laravel.com/api/5.2/Illuminate/Database/Query/Builder.html#method_toSql
 
 "python + phantomjs 实现真实用户访问url" => https://www.cnblogs.com/chenice/p/6994111.html
+
+"微信小程序开发手册" => https://developers.weixin.qq.com/miniprogram/dev/api/network-request.html
+
+"实用软件 MAC" => ['LightPaper for Mac']
