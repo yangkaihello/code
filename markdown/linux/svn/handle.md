@@ -8,4 +8,12 @@
   #不带 .SVN 版本控制的导入
   svn export svn://（IP地址）/ /home/testtools  --username="yangkai" --password="yangkai"
   ```
-SVN 服务器的项目控制到此完结
+
+* 项目中无需更新的文件删除
+  ```
+  #版本库删除操作
+  svn update --set-depth=exclude [文件路径]
+
+  #版本库恢复操作
+  svn update --set-depth=infinity [文件路径]
+  ```
