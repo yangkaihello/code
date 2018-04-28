@@ -20,7 +20,7 @@
   git tag -d v1.0[版本]
 
   #删除推送
-  git tag origin :v1.0[版本]
+  git origin :v1.0[版本]
   ```
 
 * 查看标签列表
