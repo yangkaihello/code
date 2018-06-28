@@ -17,3 +17,10 @@
   >  #rsync传输
   >  rsync  -au -pv rsync://USER@HOST[:PORT]/SRC /DEST
   >  ```
+
+* 排除某些文件传输
+
+>  ```
+>  #rsync传输 SRC 源目录下的 certain 目录不进行传输
+>  rsync  -au -pv -f "- SRC/certain" rsync://USER@HOST[:PORT]/SRC /DEST
+>  ```
