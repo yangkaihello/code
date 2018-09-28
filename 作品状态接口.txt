@@ -1,0 +1,31 @@
+查找作品 设置vip && s级授权
+
+type:post,
+
+get{
+type;
+value;
+}
+
+post{
+ids;
+}
+
+
+待审核作品 && 待审核章节 && VIP申请 && 签约申请 审核通过
+
+type:post,
+
+post{
+ids;
+}
+
+
+待审核作品 && 待审核章节 && VIP申请 && 签约申请 驳回审核
+
+type:post,
+
+post{
+ids;
+message;
+}
