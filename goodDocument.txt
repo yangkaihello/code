@@ -13,6 +13,11 @@
 	https://www.jianshu.com/p/39d4b15c05ee
 ]
 
+"nginx 负载均衡" => [
+	https://www.cnblogs.com/microtiger/p/7623858.html
+	https://www.cnblogs.com/qlqwjy/p/8536779.html
+]
+
 "mysql 主从" => https://www.cnblogs.com/phpstudy2015-6/p/6485819.html#_label7
 
 "实用软件 MAC" => ['LightPaper for Mac']
