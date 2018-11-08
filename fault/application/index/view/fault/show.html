@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{$title}</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    {include file="public/head" /}
+
+    <!-- ion slider Nice -->
+    <link rel="stylesheet" href="__STATIC__/bower_components/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="__STATIC__/bower_components/umeditor/themes/default/css/umeditor.min.css">
+    <link rel="stylesheet" href="__STATIC__/bower_components/bootstrap-fileinput/css/fileinput.min.css">
+    <style>
+        .upimg {
+            display: block;
+            width: 80px;
+            height: 30px;
+            border: 1px solid #efefef;
+            box-sizing: border-box;
+            color: #333;
+            text-align: center;
+            line-height: 30px;
+            margin-top: 6px;
+            border-radius: 4px;
+        }
+        .pos{
+            position: absolute;
+            left: 640px;
+            top: 146px;
+        }
+    </style>
+
+    <style>
+        .select2-container--default .select2-selection--single {
+            border: 1px solid #efefef;
+            border-radius: 0;
+            padding-left: 0px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 25px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            border-color: #333 transparent transparent transparent;
+            border-width: 6px 4px 0 4px;
+        }
+        .showorhide{
+            min-width: 234px;
+        }
+        .kv-file-remove{display: none;}
+    </style>
+
+</head>
+
+<body class="hold-transition skin-black-light sidebar-mini">
+
+<div class="wrapper">
+
+    {include file="public/header" /}
+
+    {include file="public/left_menu" /}
+
+    <div class="content-wrapper">
+            <section class="content">
+                <div class="table-box">
+                    <form class="cyb-form sb" id="subFrom" action="{:url('fault/handle')}" style="padding:0">
+                        <div class="form-penl">
+                            <p class="title">
+                                基本信息
+                            </p>
+                            {if condition="isset($data)"}
+                            <input type="hidden" name="id" value="{$data->id}" />
+                            {/if}
+                            <input type="hidden" name="images" id="images"
+                            value="{if condition="isset($path)"}{:implode(",",$path)}{/if}" />
+                            
+
+                            <div class="form-group clearfix">
+                                <label for="inputEmail3" class="control-label">故障日期：</label>
+                                <div class="control-input">
+                                    <input placeholder="选择时间" name="date"
+                                    class="form-control " id="date_begin" type="text" 
+                                    value="{if condition="isset($data)"}{$data->date}{/if}">
+                                    <p class="error date-error"></p>
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <label for="inputEmail3" class=" control-label">故障时长：</label>
+                                <div class="control-input ">
+                                    <input type="number" class="form-control" min="0" placeholder="以分钟计时" name="minute"
+                                    value="{if condition="isset($data)"}{$data->minute}{/if}" />
+                                    <p class="error minute-error"></p>
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <label for="inputEmail3" class=" control-label">影响范围：</label>
+                                <div class="control-input ">
+                                    <select data-show="1" class="showorhide" data-toggle="aaa" name="range" class="form-control"
+                                        id="">
+                                        {foreach $range as $key=>$value}
+                                        <option {if condition="isset($data) && $data->range == $key "}selected{/if} value="{$key}">
+                                            {$value}
+                                        </option>
+                                        {/foreach}
+                                    </select>
+                                    <p class="error range-error"></p>
+                                </div>
+                                <div class="control-input ">
+                                    <input type="text" maxlength="30" name="range_reason" id="aaa" style="    display: none;" class="form-control" placeholder="请描述影响范围，最多30个字" value="{if condition="isset($data)"}{$data->range_reason}{/if}" >
+                                    <p class="error range_reason-error"></p>
+                                </div>
+
+                            </div>
+                            <div class="form-group clearfix">
+                                <label for="inputEmail3" class=" control-label">故障来源：</label>
+                                <div class="control-input ">
+                                    <select data-show="1" class="showorhide" data-toggle="bbb" name="source" class="form-control"
+                                        id="">
+                                        {foreach $source as $key=>$value}
+                                        <option {if condition="isset($data) && $data->source == $key "}selected{/if} value="{$key}">
+                                            {$value}
+                                        </option>
+                                        {/foreach}
+                                    </select>
+                                    <p class="error source-error"></p>
+                                </div>
+                                <div class="control-input ">
+                                    <input type="text" maxlength="30" name="source_reason" id="bbb" style="    display: none;" class="form-control" placeholder="请描述影响范围，最多30个字" value="{if condition="isset($data)"}{$data->source_reason}{/if}" >
+                                    <p class="error source_reason-error"></p>
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <label class=" control-label">是否解决：</label>
+                                <div class="control-input ">
+                                    <select data-show="1" class="showorhide" name="isRenovate" class="form-control"
+                                        id="">
+                                        {foreach $isRenovate as $key=>$value}
+                                        <option {if condition="isset($data) && $data->isRenovate == $key "}selected{/if} value="{$key}">
+                                            {$value}
+                                        </option>
+                                        {/foreach}
+                                    </select>
+                                    <p class="error isRenovate-error"></p>
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <label for="inputPassword3" class=" control-label">故障标题：</label>
+                                <div class="control-input">
+                                    <input type="text" class="form-control" name="title"
+                                    placeholder="请简明概要的描述一下故障，尽量出现故障关键字" style="width:400px" value="{if condition="isset($data)"}{$data->title}{/if}">
+                                    <p class="error title-error"></p>
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <label for="inputEmail3" class=" control-label">故障原因：</label>
+                                <div class="control-input ">
+                                    <textarea id="editor" cols="20" rows="2" name="cause" >{if condition="isset($data)"}{$data->cause}{/if}</textarea>
+                                    <!-- <script id="container" name="content" style="width:500px" type="text/plain"></script> -->
+                                    <p class="error cause-error"></p>
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <label for="inputEmail3" class=" control-label">解决办法:</label>
+                                <div class="control-input ">
+                                    <textarea id="editor1" cols="20" rows="2" name="solution" >{if condition="isset($data)"}{$data->solution}{/if}</textarea>
+                                    <!-- <script id="container1" name="content" style="width:500px" type="text/plain"></script> -->
+                                    <p class="error solution-error"></p>
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <label for="inputEmail3" class=" control-label">故障截图：</label>
+                                <div class="control-input " style="width:850px">
+                                    <div id="temp-image">
+                                        {if condition="isset($images)"}
+                                        {foreach $images as $image}
+                                            <img src="{$image->image->path}" width="150" alt="">
+                                        {/foreach}
+                                        {/if}
+                                    </div>
+                                    <input type="file" name="txt_file" id="txt_file" multiple class="file-loading" />
+                                    <p class="help-block">
+                                        请一次性选择图片上传
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="form-group clearfix">
+                                <label for="inputEmail3" class="control-label"></label>
+                                <div class="control-input ">
+                                    <button type="submit" class="btn btn-default">保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <!-- /.control-sidebar -->
+    <!-- Add the sidebar's background. This div must be placed
+   immediately after the control sidebar -->
+    <div class="control-sidebar-bg"></div>
+</div>
+
+<script src="__STATIC__/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="__STATIC__/bower_components/jquery-ui/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+
+<!-- Bootstrap 3.3.7 -->
+<script src="__STATIC__/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- ckeditor 4.1 -->
+<script src="__STATIC__/bower_components/ckeditor/ckeditor.js"></script>
+
+<!-- Morris.js charts -->
+<script src="__STATIC__/bower_components/raphael/raphael.min.js"></script>
+<script src="__STATIC__/bower_components/morris.js/morris.min.js"></script>
+<!-- Sparkline -->
+<script src="__STATIC__/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="__STATIC__/bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
+<!-- daterangepicker -->
+<script src="__STATIC__/bower_components/moment/min/moment.min.js"></script>
+<script src="__STATIC__/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- datepicker -->
+<script src="__STATIC__/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="__STATIC__/bower_components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js"></script>
+<!-- Bootstrap WYSIHTML5 -->
+<script src="__STATIC__/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+<!-- Slimscroll -->
+<script src="__STATIC__/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="__STATIC__/bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="__STATIC__/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="__STATIC__/bower_components/ion.rangeSlider/js/ion.rangeSlider.min.js"></script>
+<script src="__STATIC__/dist/js/cityData.js"></script>
+<script src="__STATIC__/dist/js/jquery.cxselect.min.js"></script>
+<script src="__STATIC__/bower_components/select2/dist/js/select2.min.js"></script>
+<!-- <script src="__STATIC__/bower_components/umeditor/umeditor.config.js"></script>
+<script src="__STATIC__/bower_components/umeditor/umeditor.min.js"></script>
+<script src="__STATIC__/bower_components/umeditor/lang/zh-cn/zh-cn.js"></script> -->
+<script src="__STATIC__/bower_components/bootstrap-fileinput/js/fileinput.min.js"></script>
+<script src="__STATIC__/bower_components/bootstrap-fileinput/js/locales/zh.js"></script>
+<script>
+    $(function () {
+
+        $("#subFrom").submit(function (e){
+            for (instance in CKEDITOR.instances) {
+                CKEDITOR.instances[instance].updateElement();
+            }
+            
+            $.ajax({
+                url: $(e.currentTarget).attr("action"),
+                async: false,
+                type: "post",
+                dataType: 'json',
+                data: $(e.currentTarget).serialize(),
+                error: function (data){
+                    $(".control-input .error").hide();
+                    for( item in data.responseJSON){
+                        $("."+item+"-error").html(data.responseJSON[item]).show();
+                    };
+                    alert("存在问题，请查看填写记录");
+                },
+                success: function(data){
+                    window.location.href = '{:url("fault/list")}';
+                }
+            });
+            return false;
+        });
+
+        $('#date_begin').datepicker({
+            language: "zh-CN",
+            autoclose: true,
+            startView: 0,
+            format: "yyyy-mm-dd",
+            clearBtn: true,
+            todayBtn: false,
+            endDate: new Date()
+        })
+
+        $('.showorhide').change(function () {
+            var show = $(this).data('show');
+            if (show == $(this).val()) {
+                $('#' + $(this).data('toggle')).show();
+            } else {
+                $('#' + $(this).data('toggle')).hide();
+                $('#' + $(this).data('toggle')).val(null);
+            }
+        })
+        // var UE = UM.getEditor('container');
+        // var ue1 = UM.getEditor('container1');
+
+        CKEDITOR.replace('editor',{
+            cloudServices_tokenUrl: 'https://33333.cke-cs.com/token/dev/ijrDsqFix838Gh3wGO3F77FSW94BwcLXprJ4APSp3XQ26xsUHTi0jcb1hoBt',
+            cloudServices_uploadUrl: '{:url("upload/image")}',
+        });
+
+        CKEDITOR.replace('editor1',{
+            cloudServices_tokenUrl: 'https://33333.cke-cs.com/token/dev/ijrDsqFix838Gh3wGO3F77FSW94BwcLXprJ4APSp3XQ26xsUHTi0jcb1hoBt',
+            cloudServices_uploadUrl: '{:url("upload/image")}',
+        });
+
+        $("#txt_file").fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: '{:url("upload/image")}',
+            maxFileCount: 5,
+            allowedFileExtensions: ['jpg', 'png'],
+            maxFileSize:300,
+            showRemove : false //显示移除按钮,跟随文本框的那个
+            // showPreview :false
+        }).on("fileuploaded", function(event, data, previewId, index) {
+            var images = $("#images").val().split(",");
+            images.push(data.response.default);
+
+            images.filter(function (val,key){
+                if( !val || val === "" )
+                {
+                    images.splice(key,key+1);
+                }
+            });
+            $("#images").val(images.join(","));
+            $("#temp-image").html("");
+        }).on("filecleared", function(event, key) {
+            $("#images").val(null);
+        }).on("filebatchselected",function (){
+            $(".file-preview-success").remove();
+            $(".file-preview-error").remove();
+            $(".file-uploading").remove();
+            $("#images").val("");
+        });
+        
+    });
+</script>
+
+</body>
+
+</html>

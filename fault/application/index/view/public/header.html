@@ -1,0 +1,38 @@
+<header class="main-header">
+    <a href="{:url('fault/list')}" class="logo">
+        <span class="logo-mini"><img src="__STATIC__/dist/img/logo-min.png" alt=""></span>
+        <span class="logo-lg"><img src="__STATIC__/dist/img/logo.png" alt=""></span>
+    </a>
+    <nav class="navbar navbar-static-top">
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <li class="dropdown user user-menu">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="hidden-xs">{$Think.session.data.username}({$Think.session.data.account})</span>
+                        <span>
+                                    <img src="__STATIC__/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                                    <i class="fa fa-caret-down"></i>
+                                </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="user-header">
+                            <img src="__STATIC__/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                            <p>
+                                {$Think.session.data.username}({$Think.session.data.account})
+                            </p>
+                        </li>
+                        <li class="user-footer">
+                            <div class="pull-right">
+                                <a href="{:url('General/signOut')}" class="btn btn-default btn-flat">退出</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>

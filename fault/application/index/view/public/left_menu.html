@@ -1,0 +1,94 @@
+<aside class="main-sidebar">
+    <section class="sidebar">
+        <ul class="sidebar-menu" data-widget="tree">
+
+            <li class="header"></li>
+
+            {switch name="rolename" }
+
+                {case value="admin"}
+                    <li class="{$nickname == 'Fault/list' ? 'active' : ''}" >
+                        <a href="{:url('fault/list')}">
+                            <i class="fa fa-bars"></i>
+                            <span>故障库列表</span>
+                        </a>
+                    </li>
+                    <li class="{$nickname == 'Fault/show' ? 'active' : ''}" >
+                        <a href="{:url('fault/show')}">
+                            <i class="fa fa-plus"></i>
+                            <span>故障登记</span>
+                        </a>
+                    </li>
+
+                    <li class="{$nickname == 'Problem/list' ? 'active' : ''}" >
+                        <a href="{:url('problem/list')}">
+                            <i class="fa fa-bars"></i>
+                            <span>常见问题</span>
+                        </a>
+                    </li>
+                    <li class="{$nickname == 'Problem/show' ? 'active' : ''}" >
+                        <a href="{:url('problem/show')}">
+                            <i class="fa fa-plus"></i> <span>新增问题</span>
+                        </a>
+                    </li>
+
+                    <li class="{$nickname == 'User/list' ? 'active' : ''}" >
+                        <a href="{:url('user/list')}">
+                            <i class="fa fa-bars"></i>
+                            <span>人员列表</span>
+                        </a>
+                    </li>
+                    <li class="{$nickname == 'User/show' ? 'active' : ''}" >
+                        <a href="{:url('user/show')}">
+                            <i class="fa fa-plus"></i> <span>新增人员</span>
+                        </a>
+                    </li>
+                    <li class="{$nickname == 'Domain/list' ? 'active' : ''}" >
+                        <a href="{:url('domain/list')}">
+                            <i class="fa fa-bars"></i>
+                            <span>域名列表</span>
+                        </a>
+                    </li>
+                    <li class="{$nickname == 'Domain/show' ? 'active' : ''}" >
+                        <a href="{:url('domain/show')}">
+                            <i class="fa fa-plus"></i> <span>新增域名</span>
+                        </a>
+                    </li>
+                {/case}
+                {default /}
+                    <li class="{$nickname == 'Fault/list' ? 'active' : ''}" >
+                        <a href="{:url('fault/list')}">
+                            <i class="fa fa-bars"></i>
+                            <span>故障库列表</span>
+                        </a>
+                    </li>
+                    <li class="{$nickname == 'Fault/show' ? 'active' : ''}" >
+                        <a href="{:url('fault/show')}">
+                            <i class="fa fa-plus"></i>
+                            <span>故障登记</span>
+                        </a>
+                    </li>
+
+                    <li class="{$nickname == 'Problem/list' ? 'active' : ''}" >
+                        <a href="{:url('problem/list')}">
+                            <i class="fa fa-bars"></i>
+                            <span>常见问题</span>
+                        </a>
+                    </li>
+                    <li class="{$nickname == 'Problem/show' ? 'active' : ''}" >
+                        <a href="{:url('problem/show')}">
+                            <i class="fa fa-plus"></i> <span>新增问题</span>
+                        </a>
+                    </li>
+                    <li class="{$nickname == 'Domain/list' ? 'active' : ''}" >
+                        <a href="{:url('domain/list')}">
+                            <i class="fa fa-bars"></i>
+                            <span>域名列表</span>
+                        </a>
+                    </li>
+            {/switch}
+
+        </ul>
+
+    </section>
+</aside>

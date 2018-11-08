@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{$title}</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    {include file="public/head" /}
+
+    <!-- ion slider Nice -->
+    <link rel="stylesheet" href="__STATIC__/bower_components/select2/dist/css/select2.min.css">
+    <link rel="stylesheet" href="__STATIC__/bower_components/umeditor/themes/default/css/umeditor.min.css">
+    <link rel="stylesheet" href="__STATIC__/bower_components/bootstrap-fileinput/css/fileinput.min.css">
+    <style>
+        .upimg {
+            display: block;
+            width: 80px;
+            height: 30px;
+            border: 1px solid #efefef;
+            box-sizing: border-box;
+            color: #333;
+            text-align: center;
+            line-height: 30px;
+            margin-top: 6px;
+            border-radius: 4px;
+        }
+        .pos{
+            position: absolute;
+            left: 640px;
+            top: 146px;
+        }
+    </style>
+
+    <style>
+        .select2-container--default .select2-selection--single {
+            border: 1px solid #efefef;
+            border-radius: 0;
+            padding-left: 0px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 25px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            border-color: #333 transparent transparent transparent;
+            border-width: 6px 4px 0 4px;
+        }
+        .showorhide{
+            min-width: 234px;
+        }
+        .kv-file-remove{display: none;}
+    </style>
+
+</head>
+
+<body class="hold-transition skin-black-light sidebar-mini">
+
+<div class="wrapper">
+
+    {include file="public/header" /}
+
+    {include file="public/left_menu" /}
+
+    <div class="content-wrapper">
+            <section class="content">
+                <div class="table-box">
+                    <form class="cyb-form sb" id="subFrom" action="{:url('domain/handle')}" style="padding:0">
+                        <div class="form-penl">
+                            <p class="title">
+                                基本信息
+                            </p>
+                            {if condition="isset($data)"}
+                            <input type="hidden" name="id" value="{$data->id}" />
+                            {/if}
+
+                            <div class="form-group clearfix">
+                                <label class=" control-label">所属产品：</label>
+                                <div class="control-input ">
+                                    <select data-show="1" class="showorhide" name="product" class="form-control" >
+                                        <?php foreach(config("domain.product") as $key=>$value):?>
+                                        <option {if condition="isset($data) && $data->product == $key "}selected{/if} value="{$key}">
+                                        {$value}
+                                        </option>
+                                        <?php endforeach;?>
+                                    </select>
+                                    <p class="error product-error"></p>
+                                </div>
+                            </div>
+
+                            <div class="form-group clearfix">
+                                <label class=" control-label">域名类型：</label>
+                                <div class="control-input ">
+                                    <select data-show="1" class="showorhide" name="type" class="form-control" >
+                                        <?php foreach(config("domain.type") as $key=>$value):?>
+                                        <option {if condition="isset($data) && $data->type == $key "}selected{/if} value="{$key}">
+                                        {$value}
+                                        </option>
+                                        <?php endforeach;?>
+                                    </select>
+                                    <p class="error type-error"></p>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group clearfix">
+                                <label class=" control-label">域名名称：</label>
+                                <div class="control-input">
+                                    <input type="text" class="form-control" name="entire"
+                                    placeholder="域名名称" style="width:400px" value="{if condition="isset($data)"}{$data->entire}{/if}">
+                                    <p class="error entire-error"></p>
+                                </div>
+                            </div>
+
+                            <div class="form-group clearfix">
+                                <label class=" control-label">启用日期：</label>
+                                <div class="control-input">
+                                    <input type="text" class="form-control" name="started_date"
+                                    placeholder="启用日期" style="width:400px" value="{if condition="isset($data)"}{$data->started_date}{/if}">
+                                    <p class="error started_date-error"></p>
+                                </div>
+                            </div>
+
+                            <div class="form-group clearfix">
+                                <label class=" control-label">备注：</label>
+                                <div class="control-input">
+                                    <textarea name="remark" cols="20" rows="2" >{if condition="isset($data)"}{$data->remark}{/if}</textarea>
+                                    <p class="error remark-error"></p>
+                                </div>
+                            </div>
+
+                            <div class="form-group clearfix">
+                                <label class=" control-label">域名状态：</label>
+                                <div class="control-input input-blue">
+                                    <?php foreach(config("domain.status") as $key=>$value):?>
+                                    <span>
+                                        <input {if condition="isset($data) && $data->status == $key "}checked{/if}
+                                                type="radio" name="status" id="status{$key}" value="{$key}">
+                                        <label for="status{$key}">{$value}</label>
+                                    </span>
+                                    <?php endforeach;?>
+                                    <p class="error status-error"></p>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group clearfix">
+                                <div class="control-input ">
+                                    <button type="submit" class="btn btn-default">保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <!-- /.control-sidebar -->
+    <!-- Add the sidebar's background. This div must be placed
+   immediately after the control sidebar -->
+    <div class="control-sidebar-bg"></div>
+</div>
+
+<script src="__STATIC__/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="__STATIC__/bower_components/jquery-ui/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+
+<!-- Bootstrap 3.3.7 -->
+<script src="__STATIC__/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- Morris.js charts -->
+<script src="__STATIC__/bower_components/raphael/raphael.min.js"></script>
+<script src="__STATIC__/bower_components/morris.js/morris.min.js"></script>
+<!-- Sparkline -->
+<script src="__STATIC__/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="__STATIC__/bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
+<!-- daterangepicker -->
+<script src="__STATIC__/bower_components/moment/min/moment.min.js"></script>
+<script src="__STATIC__/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- datepicker -->
+<script src="__STATIC__/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+<!-- Slimscroll -->
+<script src="__STATIC__/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="__STATIC__/bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="__STATIC__/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="__STATIC__/bower_components/ion.rangeSlider/js/ion.rangeSlider.min.js"></script>
+<script src="__STATIC__/dist/js/cityData.js"></script>
+<script src="__STATIC__/dist/js/jquery.cxselect.min.js"></script>
+<script src="__STATIC__/bower_components/select2/dist/js/select2.min.js"></script>
+<!-- <script src="__STATIC__/bower_components/umeditor/umeditor.config.js"></script>
+<script src="__STATIC__/bower_components/umeditor/umeditor.min.js"></script>
+<script src="__STATIC__/bower_components/umeditor/lang/zh-cn/zh-cn.js"></script> -->
+<script src="__STATIC__/bower_components/bootstrap-fileinput/js/fileinput.min.js"></script>
+<script src="__STATIC__/bower_components/bootstrap-fileinput/js/locales/zh.js"></script>
+<script>
+    $(function () {
+
+        $("#subFrom").submit(function (e){
+            
+            $.ajax({
+                url: $(e.currentTarget).attr("action"),
+                async: false,
+                type: "post",
+                dataType: 'json',
+                data: $(e.currentTarget).serialize(),
+                error: function (data){
+                    $(".control-input .error").hide();
+                    for( item in data.responseJSON){
+                        $("."+item+"-error").html(data.responseJSON[item]).show();
+                    };
+                },
+                success: function(data){
+                    window.location.href = '{:url("domain/list")}';
+                }
+            });
+            return false;
+        });
+
+
+    });
+</script>
+
+</body>
+
+</html>

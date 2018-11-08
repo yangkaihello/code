@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{$title}</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    {include file="public/head" /}
+
+    <style>
+        .irs-with-grid {
+            margin-top: -18px;
+        }
+        .modal-body{
+            overflow: scroll;
+        }
+
+        .modal-body img{
+            width:50%;
+        }
+
+        .tab-block{ padding-bottom: 10px; }
+        .tab-block .tab-item{
+            display: table-cell;
+            border: 1px solid #969191;
+            padding: 5px 20px;
+            margin: 0;
+            border-right: none;
+            color:#000;
+        }
+        .tab-block .tab-item:last-child{
+            border-right: 1px solid #969191;
+        }
+        .tab-block .tab_cur{ background: #777979; color: #fff;}
+
+    </style>
+</head>
+
+<body class="hold-transition skin-black-light sidebar-mini">
+    <div class="wrapper">
+
+        {include file="public/header" /}
+
+        {include file="public/left_menu" /}
+
+        <div class="content-wrapper">
+            <section class="content">
+                <div class="table-box">
+                    
+                    <div class="tab-block">
+                        {foreach $group as $key=>$value}
+                        <a href="{:paramStringUrl(url('problem/list'),[],['group' => $key])}" class="tab-item <?php if((string)$key === request()->get('group',$defaultGroup)): ?>tab_cur<?php endif; ?>">
+                            {$value}
+                        </a>
+                        {/foreach}
+                    </div>
+
+                    <form class="form-inline" style="padding: 20px 0">
+                        {if condition="request()->get('group','')"}
+                        <input type="hidden" name="group" value="{:request()->get('group')}">
+                        {/if}
+                        <div class="form-group date-picker">
+                            <input name="startDate" placeholder="选择开始时间" class="form-control " id="date_begin" type="text"
+                                value="{:request()->get('startDate','')}"> -
+                            <input name="endDate" placeholder="选择结束时间" class="form-control " id="date_end" type="text"
+                                value="{:request()->get('endDate','')}">
+                        </div>
+                        <div class="form-group" style="margin-left:18px">
+                            <select name="source" class="form-control" id="">
+                                <option value="all">
+                                    筛选问题类型
+                                </option>
+                                {foreach $source as $key=>$value}
+                                <option {if condition="(string)$key == request()->get('source')"}selected{/if} value="{$key}">
+                                    {$value}
+                                </option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input name="keyword" type="text" class="form-control" placeholder="标题搜索" value="{:request()->get('keyword','')}" >
+                        </div>
+
+                        <button type="submit" class="btn btn-default">搜索</button>
+                    </form>
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>问题标题</th>
+                                <th style="width:30%">处理备注</th>
+                                <th style="text-align: center;">日期</th>
+                                <th style="text-align: center;">对象</th>
+                                <th style="text-align: center;">类型</th>
+                                <th style="text-align: center;">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {foreach $model as $key=>$value}
+                            <tr>
+                                <td>{$value->title}</td>
+                                <td>{$value->remark}</td>
+                                <td style="text-align: center;">
+                                    {$value->create_time}
+                                </td>
+                                <td style="text-align: center;">
+                                    {:config('problem.group')[$value->group]}
+                                </td>
+                                <td style="text-align: center;">
+                                    {:config('problem.source')[$value->source]}
+                                </td>
+                                <td style="text-align: center;">
+                                    <a href="#" style="color:#fff" class="btn btn-primary info-model"
+                                    data-id="{$value->id}" data-href="{:url('problem/info')}" data-toggle="modal" data-target="#myModal" >详情</a>
+                                    <a href="{:url('problem/show',['id'=>$value->id])}" style="color:#fff" class="btn btn-warning">编辑</a>
+                                    <a href="#" data-href="{:url('problem/delete')}" data-ids="{$value->id}" 
+                                        style="color:#fff" class="btn btn-danger delete-prompt">删除</a>
+                                </td>
+                            </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                    <nav aria-label="Page navigation" style="margin-left:20px">
+                        {$model->render()}
+                    </nav>
+                </div>
+            </section>
+            <!-- /.content -->
+        </div>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">故障详情</h4>
+              </div>
+              <div class="modal-body">
+                <h4 style="font-weight: bold;">问题描述：</h4>
+                <div id="description">不存在故障原因</div>
+
+                <h4 style="font-weight: bold;">问题回答：</h4>
+                <div id="answer">不存在解决方法</div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="control-sidebar-bg"></div>
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- jQuery 3 -->
+    <script src="__STATIC__/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="__STATIC__/bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+
+    <!-- Bootstrap 3.3.7 -->
+    <script src="__STATIC__/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Morris.js charts -->
+    <script src="__STATIC__/bower_components/raphael/raphael.min.js"></script>
+    <script src="__STATIC__/bower_components/morris.js/morris.min.js"></script>
+    <!-- Sparkline -->
+    <script src="__STATIC__/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <!-- jvectormap -->
+    <script src="__STATIC__/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="__STATIC__/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="__STATIC__/bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="__STATIC__/bower_components/moment/min/moment.min.js"></script>
+    <script src="__STATIC__/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- datepicker -->
+    <script src="__STATIC__/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="__STATIC__/bower_components/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js"></script>
+
+    <!-- Bootstrap WYSIHTML5 -->
+    <script src="__STATIC__/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+    <!-- Slimscroll -->
+    <script src="__STATIC__/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="__STATIC__/bower_components/fastclick/lib/fastclick.js"></script>
+    <!-- AdminLTE App -->
+    <script src="__STATIC__/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="__STATIC__/bower_components/ion.rangeSlider/js/ion.rangeSlider.min.js"></script>
+    <script src="__STATIC__/dist/js/cityData.js"></script>
+    <script src="__STATIC__/dist/js/jquery.cxselect.min.js"></script>
+    <script src="__STATIC__/js/global.js"></script>
+
+    <!-- AdminLTE for demo purposes -->
+    <!-- <script src="dist/js/demo.js"></script> -->
+    <script>
+        $(function () {
+
+            $('.btn-primary.info-model').on('click', function () {
+                $.post($(this).data('href'),{id:$(this).data('id')},function(data){
+                    $("#description").html(data.description);
+                    $("#answer").html(data.answer);
+                });
+            })
+
+            function DatePicker(beginSelector, endSelector) {            // 仅选择日期  
+                $(beginSelector).datepicker({
+                    language: "zh-CN",
+                    autoclose: true,
+                    startView: 0,
+                    format: "yyyy-mm-dd",
+                    clearBtn: true,
+                    todayBtn: false,
+                    endDate: new Date()
+                }).on('changeDate', function (ev) {
+                    if (ev.date) {
+                        $(endSelector).datepicker('setStartDate', new Date(ev.date.valueOf()))
+                    } else {
+                        $(endSelector).datepicker('setStartDate', null);
+                    }
+                })
+                $(endSelector).datepicker({
+                    language: "zh-CN",
+                    autoclose: true,
+                    startView: 0,
+                    format: "yyyy-mm-dd",
+                    clearBtn: true,
+                    todayBtn: false,
+                    endDate: new Date()
+                }).on('changeDate', function (ev) {
+                    if (ev.date) {
+                        $(beginSelector).datepicker('setEndDate', new Date(ev.date.valueOf()))
+                    } else {
+                        $(beginSelector).datepicker('setEndDate', new Date());
+                    }
+                })
+            } DatePicker("#date_begin", "#date_end");
+
+
+
+        });
+    </script>
+</body>
+
+</html>

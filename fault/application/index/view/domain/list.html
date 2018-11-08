@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{$title}</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    {include file="public/head" /}
+
+    <style>
+        .irs-with-grid {
+            margin-top: -18px;
+        }
+        .modal-body{
+            overflow: scroll;
+        }
+
+        .modal-body img{
+            width:50%;
+        }
+    </style>
+
+</head>
+
+<body class="hold-transition skin-black-light sidebar-mini">
+
+<div class="wrapper">
+
+    {include file="public/header" /}
+
+    {include file="public/left_menu" /}
+
+    <div class="content-wrapper">
+            <section class="content">
+                <div class="table-box">
+                    <form class="cyb-form" style="padding: 20px 0">
+
+                        <div class="form-group clearfix">
+                            <label class=" control-label">所属产品：</label>
+                            <div class="control-input">
+                                <select name="product">
+                                    <option value="all">全部</option>
+                                    <?php foreach(config("domain.product") as $key=>$value):?>
+                                    <option {if condition="request()->param('product') == $key "}selected{/if} value="{$key}">
+                                    {$value}
+                                    </option>
+                                    <?php endforeach;?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label class=" control-label">域名类型：</label>
+                            <div class="control-input">
+                                <select name="type">
+                                    <option value="all">全部</option>
+                                    <?php foreach(config("domain.type") as $key=>$value):?>
+                                    <option {if condition="request()->param('type') == $key "}selected{/if} value="{$key}">
+                                    {$value}
+                                    </option>
+                                    <?php endforeach;?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label class="control-label">域名状态：</label>
+                            <div class="control-input input-blue">
+                                <span>
+                                    <input {if condition="request()->param('status','all') == 'all'"}checked{/if}
+                                            type="radio" name="status" id="status0" value="all">
+                                    <label for="status0">全部</label>
+                                </span>
+                                <?php foreach(config("domain.status") as $key=>$value):?>
+                                <span>
+                                    <input {if condition="request()->param('status','all') == $key "}checked{/if}
+                                            type="radio" name="status" id="status{$key}" value="{$key}">
+                                    <label for="status{$key}">{$value}</label>
+                                </span>
+                                <?php endforeach;?>
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label class=" control-label">搜索域名：</label>
+                            <div class="control-input">
+                                <div class="search-box">
+                                    <i class="fa fa-search"></i>
+                                    <input type="text" name="keywords" class="form-control"
+                                           placeholder="输入域名关键词进行模糊匹配" value="{:request()->param('keywords')}" >
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label class=" control-label"></label>
+                            <div class="control-input">
+                                <button type="submit" class="btn btn-default">查询</button>
+                                <a href="{:paramStringUrl(url('domain/export'),request()->get())}" target="_blank" class="btn btn-default" style="margin-left: 20px;">Excel导出</a>
+                            </div>
+                        </div>
+                    </form>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center; width: 150px;">序号</th>
+                                <th style="text-align: center;">域名</th>
+                                <th style="text-align: center;">启用日期</th>
+                                <th style="text-align: center;">备注</th>
+                                <th style="text-align: center;">所属产品</th>
+                                <th style="text-align: center;">域名类型</th>
+                                <th style="text-align: center;">域名状态</th>
+                                <?php if($rolename == 'admin'): ?>
+                                <th style="text-align: center;">操作</th>
+                                <?php endif; ?>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {foreach $model as $key=>$value}
+                            <tr>
+                                <td style="text-align: center;">
+                                    {$value->id}
+                                </td>
+                                <td style="text-align: center;">
+                                    {$value->entire}
+                                </td>
+                                <td style="text-align: center;">
+                                    {$value->started_date}
+                                </td>
+                                <td style="text-align: center; max-width: 400px;">
+                                    {$value->remark}
+                                </td>
+                                <td style="text-align: center;">
+                                    {:config("domain.product")[$value->product]}
+                                </td>
+                                <td style="text-align: center;">
+                                    {:config("domain.type")[$value->type]}
+                                </td>
+                                <td style="text-align: center;">
+                                    {:config("domain.status")[$value->status]}
+                                </td>
+                                <?php if($rolename == 'admin'): ?>
+                                <td style="text-align: center;">
+                                    <a href="{:url('domain/show',['id'=>$value->id])}" style="color:#fff" class="btn btn-warning">编辑</a>
+                                    <a href="#" data-href="{:url('domain/delete')}" data-ids="{$value->id}"
+                                        style="color:#fff" class="btn btn-danger delete-prompt">删除</a>
+                                </td>
+                                <?php endif; ?>
+                            </tr>
+                            {/foreach}
+                        </tbody>
+
+                        <tfoot>
+                            <td align="center" style="vertical-align: middle;">搜索结果：{$model->total()}条</td>
+                            <td colspan="20">
+                                {$model->render()}    
+                            </td>
+                        </tfoot>
+                    </table>
+                </div>
+            </section>
+            <!-- /.content -->
+        </div>
+        
+    <!-- Add the sidebar's background. This div must be placed
+   immediately after the control sidebar -->
+    <div class="control-sidebar-bg"></div>
+</div>
+
+
+{include file="public/footer" /}
+
+<script src="__STATIC__/js/global.js"></script>
+<!-- AdminLTE for demo purposes -->
+
+<script>
+    $(function () {
+
+        function DatePicker(beginSelector, endSelector) {            // 仅选择日期  
+            $(beginSelector).datepicker({
+                language: "zh-CN",
+                autoclose: true,
+                startView: 0,
+                format: "yyyy-mm-dd",
+                clearBtn: true,
+                todayBtn: false,
+                endDate: new Date()
+            }).on('changeDate', function (ev) {
+                if (ev.date) {
+                    $(endSelector).datepicker('setStartDate', new Date(ev.date.valueOf()))
+                } else {
+                    $(endSelector).datepicker('setStartDate', null);
+                }
+            })
+            $(endSelector).datepicker({
+                language: "zh-CN",
+                autoclose: true,
+                startView: 0,
+                format: "yyyy-mm-dd",
+                clearBtn: true,
+                todayBtn: false,
+                endDate: new Date()
+            }).on('changeDate', function (ev) {
+                if (ev.date) {
+                    $(beginSelector).datepicker('setEndDate', new Date(ev.date.valueOf()))
+                } else {
+                    $(beginSelector).datepicker('setEndDate', new Date());
+                }
+            })
+        } DatePicker("#date_begin", "#date_end");
+
+    });
+</script>
+
+</body>
+
+</html>
